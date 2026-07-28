@@ -74,6 +74,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Accept Android licenses and install NDK
+        run: |
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
       - name: Install dependencies
         run: flutter pub get
 
