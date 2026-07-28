@@ -72,9 +72,9 @@ final class ParsingError extends ApiError {
 /// Catch-all for anything that doesn't map to a more specific error.
 final class UnknownApiError extends ApiError {
   const UnknownApiError([
-    String message = 'An unexpected error occurred.',
+    super.message = 'An unexpected error occurred.',
     int? statusCode,
-  ]) : super(message, statusCode: statusCode);
+  ]) : super(statusCode: statusCode);
 }
 
 /// Maps a [DioException] (or any other thrown error) to a typed [ApiError].
