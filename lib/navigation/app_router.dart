@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../di/app_module.dart';
 import '../features/auth/presentation/login_screen.dart';
+import '../features/home/presentation/home_screen.dart';
 
 /// Route path constants, kept in one place so string literals never leak
 /// into feature code.
@@ -40,7 +41,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.home,
         name: 'home',
-        builder: (context, state) => const _HomePlaceholder(),
+        builder: (context, state) => const HomeScreen(),
       ),
     ],
     errorBuilder:
@@ -60,18 +61,5 @@ abstract final class AppRouter {
     if (!isLoggedIn && !isLoggingIn) return AppRoutes.login;
     if (isLoggedIn && isLoggingIn) return AppRoutes.home;
     return null;
-  }
-}
-
-/// Placeholder home screen; replace with the real post-auth entry point.
-class _HomePlaceholder extends StatelessWidget {
-  const _HomePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: const Center(child: Text('You are signed in.')),
-    );
   }
 }

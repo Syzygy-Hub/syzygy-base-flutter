@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginCubit(AppModule.instance.authUseCase),
+      create: (_) => LoginCubit(AppModule.instance.secureStorage),
       child: _LoginView(onLoginSuccess: onLoginSuccess),
     );
   }
@@ -100,8 +100,8 @@ class _LoginViewState extends State<_LoginView> {
                       decoration: const InputDecoration(labelText: 'Email'),
                       validator:
                           (value) =>
-                              (value == null || !value.contains('@'))
-                                  ? 'Enter a valid email'
+                              (value == null || value.trim().isEmpty)
+                                  ? 'Email is required'
                                   : null,
                     ),
                     AppSpacing.gapMd,
@@ -125,8 +125,8 @@ class _LoginViewState extends State<_LoginView> {
                       ),
                       validator:
                           (value) =>
-                              (value == null || value.length < 8)
-                                  ? 'Minimum 8 characters'
+                              (value == null || value.isEmpty)
+                                  ? 'Password is required'
                                   : null,
                     ),
                     AppSpacing.gapLg,
