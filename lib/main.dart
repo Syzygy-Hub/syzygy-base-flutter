@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:syzygy_ui_flutter/syzygy_ui_flutter.dart';
 
 import 'core/constants/app_constants.dart';
-import 'design_system/app_colors.dart';
-import 'design_system/app_typography.dart';
 import 'di/app_module.dart';
 import 'navigation/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await AppModule.instance.init(
-    apiBaseUrl: const String.fromEnvironment(
-      'API_BASE_URL',
-      defaultValue: 'https://api.example.com',
-    ),
-    enableNetworkLogging: !const bool.fromEnvironment('dart.vm.product'),
-  );
+  await initDI();
 
   runApp(const App());
 }
@@ -28,19 +21,12 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: AppColors.lightScheme,
-        textTheme: AppTypography.textTheme,
-        scaffoldBackgroundColor: AppColors.lightBackground,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: AppColors.darkScheme,
-        textTheme: AppTypography.textTheme,
-        scaffoldBackgroundColor: AppColors.darkBackground,
-      ),
+      theme: ThemeData(useMaterial3: true),
       routerConfig: AppRouter.router,
+      builder: (context, child) => SyzygyThemeProvider(
+        theme: SyzygyTheme.defaultTheme,
+        builder: (context, setTheme) => child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

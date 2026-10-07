@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// TokenAuthProvider is defined in syzygy_services_flutter; imported here for
+// the DI resolve call. app_module.dart already imports syzygy_foundation_flutter
+// for StorageProvider, but login_screen.dart resolves the concrete service type.
+import 'package:syzygy_services_flutter/syzygy_services_flutter.dart'
+    show TokenAuthProvider;
+import 'package:syzygy_ui_flutter/syzygy_ui_flutter.dart';
 
 import '../../../core/extensions/context_extensions.dart';
-import '../../../design_system/app_spacing.dart';
 import '../../../di/app_module.dart';
 import 'login_cubit.dart';
 import 'login_state.dart';
@@ -18,7 +23,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginCubit(AppModule.instance.secureStorage),
+      create: (_) => LoginCubit(appContainer.resolve<TokenAuthProvider>()),
       child: _LoginView(onLoginSuccess: onLoginSuccess),
     );
   }
@@ -74,37 +79,36 @@ class _LoginViewState extends State<_LoginView> {
             final isLoading = state is LoginLoading;
 
             return SingleChildScrollView(
-              padding: AppSpacing.pagePadding,
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppSpacing.gapXl,
+                    const SizedBox(height: AppSpacing.xl),
                     Text(
                       'Welcome back',
                       style: context.textTheme.headlineMedium,
                     ),
-                    AppSpacing.gapSm,
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       'Sign in to continue',
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.outline,
                       ),
                     ),
-                    AppSpacing.gapXl,
+                    const SizedBox(height: AppSpacing.xl),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       autofillHints: const [AutofillHints.email],
                       decoration: const InputDecoration(labelText: 'Email'),
-                      validator:
-                          (value) =>
-                              (value == null || value.trim().isEmpty)
-                                  ? 'Email is required'
-                                  : null,
+                      validator: (value) =>
+                          (value == null || value.trim().isEmpty)
+                              ? 'Email is required'
+                              : null,
                     ),
-                    AppSpacing.gapMd,
+                    const SizedBox(height: AppSpacing.md),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -117,31 +121,26 @@ class _LoginViewState extends State<_LoginView> {
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
-                          onPressed:
-                              () => setState(
-                                () => _obscurePassword = !_obscurePassword,
-                              ),
+                          onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
                         ),
                       ),
-                      validator:
-                          (value) =>
-                              (value == null || value.isEmpty)
-                                  ? 'Password is required'
-                                  : null,
+                      validator: (value) =>
+                          (value == null || value.isEmpty)
+                              ? 'Password is required'
+                              : null,
                     ),
-                    AppSpacing.gapLg,
+                    const SizedBox(height: AppSpacing.lg),
                     FilledButton(
                       onPressed: isLoading ? null : () => _submit(context),
-                      child:
-                          isLoading
-                              ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : const Text('Sign in'),
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text('Sign in'),
                     ),
                   ],
                 ),

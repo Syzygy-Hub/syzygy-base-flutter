@@ -1,6 +1,6 @@
 # Miscellaneous
 *.class
-*.lock
+# *.lock intentionally omitted — pubspec.lock is committed for app projects
 *.log
 *.pyc
 *.swp
@@ -9,6 +9,7 @@
 .DS_Store
 **/.DS_Store
 .idea/
+*.iml
 
 
 

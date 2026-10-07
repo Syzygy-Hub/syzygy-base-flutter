@@ -1,0 +1,13 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+    tags-ignore: ['*']
+
+jobs:
+  ci:
+    uses: Syzygy-Hub/.github/.github/workflows/flutter-ci.yml@main
+    with:
+      flutter_version: '3.35.0'
+      coverage: false

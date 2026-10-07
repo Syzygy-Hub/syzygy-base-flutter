@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:boilerplate/di/app_module.dart';
-import 'package:boilerplate/main.dart';
+import 'package:syzygy_base/di/app_module.dart';
+import 'package:syzygy_base/main.dart';
 
 void main() {
   const secureStorageChannel = MethodChannel(
@@ -36,13 +36,13 @@ void main() {
               return <String, String>{};
           }
         });
-    await AppModule.instance.init(apiBaseUrl: 'https://api.example.com');
+    await initDI();
   });
 
   tearDown(() async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(secureStorageChannel, null);
-    await AppModule.instance.reset();
+    await resetDI();
   });
 
   testWidgets('App renders the login screen on first launch', (
@@ -74,6 +74,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Welcome!'), findsOneWidget);
-    expect(find.text('Boilerplate'), findsWidgets);
+    expect(find.text('SyzygyBase'), findsWidgets);
   });
 }
