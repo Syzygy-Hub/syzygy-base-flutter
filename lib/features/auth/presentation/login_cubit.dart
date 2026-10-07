@@ -33,7 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
     // For now, the provider is called directly with a stub token so that
     // AppRouter's auth guard detects a signed-in state.
     _authProvider.authenticate(
-      AuthToken(accessToken: 'stub-access-token', refreshToken: null),
+      const AuthToken(accessToken: 'stub-access-token', refreshToken: null),
     );
 
     emit(LoginSuccess(AuthUser(id: 'stub-user', email: trimmedEmail)));

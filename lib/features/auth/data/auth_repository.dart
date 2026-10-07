@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
     // TODO: Replace with a real POST /auth/login call using _networkClient and
     // parse the response into an AuthToken.
     _authProvider.authenticate(
-      AuthToken(accessToken: 'stub-token', refreshToken: null),
+      const AuthToken(accessToken: 'stub-token', refreshToken: null),
     );
     return AuthUser(id: 'stub-user', email: email);
   }
